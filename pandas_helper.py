@@ -2,7 +2,7 @@ from pandas import DataFrame
 import pandas as pd
 from numpy import array
 
-def convert_categorical_to_numerical(dataframe: DataFrame, column_name: str, replace: bool=False, return_dict: bool=False):
+def convert_categorical_to_numerical(dataframe: DataFrame, column_name: str, replace: bool=True, return_dict: bool=False):
     '''
     Used to convert a given column of categorical values into numerics.
 
