@@ -1,10 +1,8 @@
-from ast import Str
 from pandas import DataFrame
 import pandas as pd
-from pyparsing import col
 from numpy import array
 
-def convert_categorical_to_numerical(dataframe: DataFrame, column_name: Str, replace: bool=False, return_dict: bool=False):
+def convert_categorical_to_numerical(dataframe: DataFrame, column_name: str, replace: bool=False, return_dict: bool=False):
     '''
     Used to convert a given column of categorical values into numerics.
 
@@ -18,7 +16,6 @@ def convert_categorical_to_numerical(dataframe: DataFrame, column_name: Str, rep
     key_dictionary = {name: index for index, name in enumerate(uniques)}
 
     if replace:
-        dataframe.drop([column_name], axis=1, inplace=True)
         dataframe[column_name] = array([key_dictionary[value] for value in values])
     else:
         dataframe["n"+column_name] = array([key_dictionary[value] for value in values])    
@@ -29,3 +26,21 @@ def convert_categorical_to_numerical(dataframe: DataFrame, column_name: Str, rep
         return dataframe
 
 # def replace all values in a given column by giving it some values to replace with in a dictionary.
+def replace_categorical(dataframe: DataFrame, column_name: str, values: dict):
+    '''
+    Takes in a dataframe, a column name of a categorical variable, and a dictionary containing the values to replace the categorical values to.
+
+    In a column containing "yes" and "no", the values_dict can be passed through as
+    {
+        "yes": 1,
+        "no": 0
+    }
+    To turn the values into 1's and 0's, respectively.
+    '''
+    df_values = dataframe[column_name].values
+    values_uniques = [key for key in values]
+    new_values = [values[value] if value in values_uniques else None for value in df_values]
+    dataframe[column_name] = array(new_values)
+    return dataframe
+
+
